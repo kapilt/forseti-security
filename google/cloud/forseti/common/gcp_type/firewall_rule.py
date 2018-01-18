@@ -120,7 +120,7 @@ class FirewallRule(object):
                       self.network,
                       self._priority,
                       self.direction,
-                      self._firewall_action)
+                      self.firewall_action) # TODO create pr for change from _firewall_action
 
         for field_name, value in [
                 ('sourceRanges', self._source_ranges),
