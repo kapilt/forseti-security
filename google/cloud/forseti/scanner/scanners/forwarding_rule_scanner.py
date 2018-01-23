@@ -71,11 +71,13 @@ class ForwardingRuleScanner(base_scanner.BaseScanner):
             violation_data['port_range'] = violation.port_range
             violation_data['ip_protocol'] = violation.ip_protocol
             violation_data['ip_address'] = violation.ip_address
+            violation_data['resource_full_name'] = violation.resource_full_name
             yield {
                 'resource_id': violation.resource_id,
                 'resource_type': violation.resource_type,
+                'resource_full_name': violation.resource_full_name,
                 'rule_index': violation.rule_index,
-                'rule_name': violation.violation_type,
+                'rule_name': violation.rule_name,
                 'violation_type': violation.violation_type,
                 'violation_data': violation_data,
             }
@@ -102,9 +104,11 @@ class ForwardingRuleScanner(base_scanner.BaseScanner):
             for forwarding_rule in data_access.scanner_iter(
                     session, 'forwardingrule'):
                 project_id = forwarding_rule.parent.name
+                full_name = forwarding_rule.full_name
                 forwarding_rule_data = forwarding_rule.data
                 forwarding_rules.append(
-                    ForwardingRule.from_json(project_id, forwarding_rule_data))
+                    ForwardingRule.from_json(
+                        project_id, full_name, forwarding_rule_data))
 
         return forwarding_rules
 

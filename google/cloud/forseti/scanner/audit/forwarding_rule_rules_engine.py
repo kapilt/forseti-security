@@ -28,11 +28,11 @@ class ForwardingRuleRulesEngine(bre.BaseRulesEngine):
     """Rules engine for forwarding rules"""
 
     RuleViolation = namedtuple('RuleViolation',
-                               [
-                                   'violation_type', 'target', 'rule_index',
-                                   'load_balancing_scheme', 'port_range',
-                                   'resource_type', 'port', 'ip_protocol',
-                                   'ip_address', 'resource_id'])
+                               ['resource_full_name', 'rule_name',
+                                'violation_type', 'target', 'rule_index',
+                                'load_balancing_scheme', 'port_range',
+                                'resource_type', 'port', 'ip_protocol',
+                                'ip_address', 'resource_id'])
 
     def __init__(self, rules_file_path, snapshot_timestamp=None):
         """Initialize.
@@ -82,6 +82,7 @@ class ForwardingRuleRulesEngine(bre.BaseRulesEngine):
 
         return self.RuleViolation(
             violation_type='FORWARDING_RULE_VIOLATION',
+            rule_name='NO_MATCHING_WHITELIST',
             load_balancing_scheme=forwarding_rule. \
                 load_balancing_scheme,
             target=forwarding_rule.target,
@@ -90,6 +91,7 @@ class ForwardingRuleRulesEngine(bre.BaseRulesEngine):
             ip_protocol=forwarding_rule.ip_protocol,
             ip_address=forwarding_rule.ip_address,
             resource_id=forwarding_rule.resource_id,
+            resource_full_name=forwarding_rule.full_name,
             rule_index=len(resource_rules),
             resource_type=ResourceType.FORWARDING_RULE)
 
@@ -159,7 +161,8 @@ class ForwardingRuleRulesBook(bre.BaseRuleBook):
                              'port_range': port_range,
                              'ip_address': ip_address,
                              'ip_protocol': ip_protocol,
-                             'port': port, }
+                             'port': port,
+                             'full_name': ''}
 
         rule = Rule(rule_name=rule_def.get('name'),
                     rule_index=rule_index,
