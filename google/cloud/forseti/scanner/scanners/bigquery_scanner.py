@@ -73,8 +73,9 @@ class BigqueryScanner(base_scanner.BaseScanner):
             violation_data['role'] = violation.role
             violation_data['view'] = violation.view
             yield {
-                'resource_id': violation.dataset_id,
+                'resource_id': violation.resource_id,
                 'resource_type': violation.resource_type,
+                'resource_full_name': violation.resource_full_name,
                 'rule_index': violation.rule_index,
                 'rule_name': violation.rule_name,
                 'violation_type': violation.violation_type,
@@ -127,6 +128,7 @@ class BigqueryScanner(base_scanner.BaseScanner):
                     BigqueryAccessControls.from_json(
                         project_id=project_id,
                         dataset_id=dataset_id,
+                        full_name=policy.full_name,
                         acls=policy.data))
 
         return bq_acls

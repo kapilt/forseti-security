@@ -39,6 +39,7 @@ def create_list_of_bq_objects_from_data():
         temp_test_bq_acl = bq_acls.BigqueryAccessControls(
             project_id=data['project_id'],
             dataset_id=data['dataset_id'],
+            full_name=data['full_name'],
             special_group=data['access_special_group'],
             user_email=data['access_user_by_email'],
             domain=data['access_domain'],

@@ -153,6 +153,7 @@ class BigqueryRuleBook(bre.BaseRuleBook):
             rule_def_resource = bq_acls.BigqueryAccessControls(
                 project_id='',
                 dataset_id=escape_and_globify(dataset_id),
+                full_name=escape_and_globify(''),
                 special_group=escape_and_globify(special_group),
                 user_email=escape_and_globify(user_email),
                 domain=escape_and_globify(domain),
@@ -187,7 +188,8 @@ class Rule(object):
        Also finds violations.
     """
 
-    rule_violation_attributes = ['resource_type', 'resource_id', 'rule_name',
+    rule_violation_attributes = ['resource_type', 'resource_id',
+                                 'resource_full_name', 'rule_name',
                                  'rule_index', 'violation_type', 'dataset_id',
                                  'role', 'special_group', 'user_email',
                                  'domain', 'group_email', 'view']
@@ -252,7 +254,8 @@ class Rule(object):
         if should_raise_violation:
             yield self.RuleViolation(
                 resource_type='bigquery_dataset',
-                resource_id=bigquery_acl.project_id,
+                resource_id=bigquery_acl.dataset_id,
+                resource_full_name=bigquery_acl.full_name,
                 rule_name=self.rule_name,
                 rule_index=self.rule_index,
                 violation_type='BIGQUERY_VIOLATION',

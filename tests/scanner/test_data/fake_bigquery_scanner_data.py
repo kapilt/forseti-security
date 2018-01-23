@@ -18,6 +18,7 @@ from google.cloud.forseti.scanner.audit.bigquery_rules_engine import Rule
 BIGQUERY_DATA = [{
     'project_id': '12345678',
     'dataset_id': 'xza',
+    'full_name': 'fake_full_name111',
     'access_domain': '',
     'access_user_by_email': 'user@mockedexample.com',
     'access_group_by_email': '',
@@ -27,6 +28,7 @@ BIGQUERY_DATA = [{
 }, {
     'project_id': '12345678',
     'dataset_id': 'xza',
+    'full_name': 'fake_full_name222',
     'access_domain': '',
     'access_user_by_email': 'user1@mockedexample.com',
     'access_group_by_email': '',
@@ -38,7 +40,8 @@ BIGQUERY_DATA = [{
 BIGQUERY_EXPECTED_VIOLATION_LIST = [
     Rule.RuleViolation(
         domain='',
-        resource_id='12345678',
+        resource_id='xza',
+        resource_full_name='fake_full_name111',
         special_group='',
         group_email='',
         rule_name='BigQuery test rule',
@@ -51,7 +54,8 @@ BIGQUERY_EXPECTED_VIOLATION_LIST = [
         view=''),
     Rule.RuleViolation(
         domain='',
-        resource_id='12345678',
+        resource_id='xza',
+        resource_full_name='fake_full_name222',
         special_group='',
         group_email='',
         rule_name='BigQuery test rule',
