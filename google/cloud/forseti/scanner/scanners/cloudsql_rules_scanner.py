@@ -71,6 +71,7 @@ class CloudSqlAclScanner(base_scanner.BaseScanner):
             yield {
                 'resource_id': violation.resource_id,
                 'resource_type': violation.resource_type,
+                'resource_full_name': violation.resource_full_name,
                 'rule_index': violation.rule_index,
                 'rule_name': violation.rule_name,
                 'violation_type': violation.violation_type,
@@ -122,6 +123,7 @@ class CloudSqlAclScanner(base_scanner.BaseScanner):
                 cloudsql_acls.append(
                     CloudSqlAccessControl.from_json(
                         project_id=project_id,
+                        full_name=instance.full_name,
                         instance_data=instance.data))
 
         return cloudsql_acls

@@ -20,13 +20,16 @@ import json
 class CloudSqlAccessControl(object):
     """CloudSQL IP Configuration (access ACLs) Resource."""
 
-    def __init__(self, project_id, instance_name, ipv4_enabled,
+    def __init__(self, project_id, instance_name, full_name, ipv4_enabled,
                  authorized_networks, require_ssl, raw_json):
         """Initialize.
 
         Args:
             project_id (str): The project id.
             instance_name (str): CloudSQL instance name
+            full_name (str): Full name of the resource in hierarchical format.
+                Example of a full_name:
+                organization/88888/project/myproject/firewall/99999/
             ipv4_enabled (bool): True if IP access is enabled for the instance.
             authorized_networks (list): Authorized networks for CloudSQL
                 instance.
@@ -35,17 +38,21 @@ class CloudSqlAccessControl(object):
         """
         self.project_id = project_id
         self.instance_name = instance_name
+        self.full_name = full_name
         self.ipv4_enabled = ipv4_enabled
         self.authorized_networks = authorized_networks
         self.require_ssl = require_ssl
         self.json = raw_json
 
     @classmethod
-    def from_dict(cls, project_id, instance_name, acl):
+    def from_dict(cls, project_id, full_name, instance_name, acl):
         """Returns a new CloudSqlAccessControl object from dict.
 
         Args:
             project_id (str): The project id.
+            full_name (str): Full name of the resource in hierarchical format.
+                Example of a full_name:
+                organization/88888/project/myproject/firewall/99999/
             instance_name (str): The CloudSQL instance name.
             acl (dict): The CloudSQL ACL.
 
@@ -57,6 +64,7 @@ class CloudSqlAccessControl(object):
         return cls(
             project_id=project_id,
             instance_name=instance_name,
+            full_name=full_name,
             ipv4_enabled=acl.get('ipv4Enabled', False),
             authorized_networks=networks,
             require_ssl=acl.get('requireSsl', False),
@@ -64,11 +72,14 @@ class CloudSqlAccessControl(object):
         )
 
     @staticmethod
-    def from_json(project_id, instance_data):
+    def from_json(project_id, full_name, instance_data):
         """Returns a new CloudSqlAccessControl object from json data.
 
         Args:
             project_id (str): the project id.
+            full_name (str): Full name of the resource in hierarchical format.
+                Example of a full_name:
+                organization/88888/project/myproject/firewall/99999/
             instance_data (str): The json data for the CloudSQL instance.
 
         Returns:
@@ -76,7 +87,7 @@ class CloudSqlAccessControl(object):
         """
         instance = json.loads(instance_data)
         return CloudSqlAccessControl.from_dict(
-            project_id, instance['name'],
+            project_id, full_name, instance['name'],
             instance['settings'].get('ipConfiguration', {}))
 
     def __hash__(self):

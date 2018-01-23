@@ -22,9 +22,11 @@ from tests.unittest_utils import ForsetiTestCase
 from google.cloud.forseti.services.scanner import dao as scanner_dao
 from tests.services.utils.db import create_test_engine
 
+FAKE_MODEL_HANDLE = 'fake_model_88888'
 
 FAKE_VIOLATIONS = [
-    {'resource_id': 'fake_firewall_111',
+    {'model_handle': FAKE_MODEL_HANDLE,
+     'resource_id': 'fake_firewall_111',
      'rule_name': 'disallow_all_ports_111',
      'rule_index': 111,
      'violation_data':
@@ -34,7 +36,8 @@ FAKE_VIOLATIONS = [
      'violation_type': 'FIREWALL_BLACKLIST_VIOLATION_111',
      'resource_type': 'firewall_rule'},
 
-    {'resource_id': 'fake_firewall_222',
+    {'model_handle': FAKE_MODEL_HANDLE,
+     'resource_id': 'fake_firewall_222',
      'rule_name': 'disallow_all_ports_222',
      'rule_index': 222,
      'violation_data':
@@ -62,15 +65,14 @@ class ScannerDaoTest(ForsetiTestCase):
 
         engine = create_test_engine()
         violation_access_cls = scanner_dao.define_violation(
-            'fake_model_88888', engine)
-        violation_access = violation_access_cls(engine)
+            FAKE_MODEL_HANDLE, engine)
+        violation_access = violation_access_cls(engine, FAKE_MODEL_HANDLE)
 
         violation_access.create(FAKE_VIOLATIONS)
         saved_violations = violation_access.list()
 
-        keys = ['resource_type', 'rule_name', 'rule_index', 'violation_type',
-                'violation_data']
         for fake, saved in izip(FAKE_VIOLATIONS, saved_violations):
+            keys = fake.keys()
             for key in keys:
                 if key != 'violation_data':
                     self.assertEquals(
