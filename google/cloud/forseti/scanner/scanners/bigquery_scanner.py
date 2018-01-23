@@ -66,7 +66,7 @@ class BigqueryScanner(base_scanner.BaseScanner):
         for violation in violations:
             violation_data = {}
             violation_data['dataset_id'] = violation.dataset_id
-            violation_data['resource_fulle_name'] = violation.full_name
+            violation_data['resource_fulle_name'] = violation.resource_full_name
             violation_data['access_domain'] = violation.domain
             violation_data['access_user_by_email'] = violation.user_email
             violation_data['access_special_group'] = violation.special_group
