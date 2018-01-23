@@ -27,6 +27,8 @@ FAKE_MODEL_HANDLE = 'fake_model_88888'
 FAKE_VIOLATIONS = [
     {'model_handle': FAKE_MODEL_HANDLE,
      'resource_id': 'fake_firewall_111',
+     'resource_full_name': ('organization/org1/folder/folder2/folder/folder3/'
+                            'project/project4/firewall/fake_firewall_111/'),
      'rule_name': 'disallow_all_ports_111',
      'rule_index': 111,
      'violation_data':
@@ -38,6 +40,8 @@ FAKE_VIOLATIONS = [
 
     {'model_handle': FAKE_MODEL_HANDLE,
      'resource_id': 'fake_firewall_222',
+     'resource_full_name': ('organization/org1/folder/folder2/folder/folder3/'
+                            'project/project4/firewall/fake_firewall_222/'),
      'rule_name': 'disallow_all_ports_222',
      'rule_index': 222,
      'violation_data':
@@ -64,8 +68,7 @@ class ScannerDaoTest(ForsetiTestCase):
         """Test violations can be saved."""
 
         engine = create_test_engine()
-        violation_access_cls = scanner_dao.define_violation(
-            FAKE_MODEL_HANDLE, engine)
+        violation_access_cls = scanner_dao.define_violation(engine)
         violation_access = violation_access_cls(engine, FAKE_MODEL_HANDLE)
 
         violation_access.create(FAKE_VIOLATIONS)
