@@ -40,7 +40,7 @@ class DbConnector(object):
             user=global_configs['db_user'],
             db=global_configs['db_name'])
         if 'db_password' in global_configs:
-            params['dbpass'] = global_configs['db_password']
+            params['passwd'] = global_configs['db_password']
         try:
             self.conn = MySQLdb.connect(local_infile=1, **params)
         except OperationalError as e:
