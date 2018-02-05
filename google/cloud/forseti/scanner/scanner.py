@@ -102,6 +102,7 @@ def run(forseti_config, model_name=None, service_config=None):
     global_configs = configs.get('global')
     scanner_configs = configs.get('scanner')
 
+    import pdb; pdb.set_trace()
     log_util.set_logger_level_from_config(scanner_configs.get('loglevel'))
 
     # TODO: Figure out if we still need to get the latest model here,
@@ -126,6 +127,9 @@ def run(forseti_config, model_name=None, service_config=None):
         except:
             LOGGER.error('Error running scanner: %s',
                          scanner.__class__.__name__, exc_info=True)
+            import pdb, traceback, sys
+            traceback.print_exc()
+            pdb.post_mortem(sys.exc_info()[-1])
     # pylint: enable=bare-except
 
     LOGGER.info('Scan complete!')

@@ -25,7 +25,8 @@ from setuptools.command.install import install
 
 import google.cloud.forseti
 
-FORSETI_VERSION = google.cloud.forseti.__version__
+FORSETI_VERSION = "2.0"
+# google.cloud.forseti.__version__
 
 NAMESPACE_PACKAGES = [
     'google',
